@@ -3,112 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Be My Valentine ❤️</title>
+<title>Be My Valentine 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
 body {
   height: 100vh;
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  position: relative;
 }
 
-/* Glass card */
+/* Container card */
 .container {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(15px);
-  padding: 50px;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-  width: 90%;
-  max-width: 500px;
-  animation: fadeIn 1.2s ease-in-out;
-  position: relative;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  padding: 50px 30px;
+  border-radius: 25px;
+  text-align:center;
+  color:white;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  max-width:500px;
+  position:relative;
+  z-index: 2;
 }
 
 h1 {
-  font-size: 26px;
-  margin-bottom: 30px;
+  font-family: 'Pacifico', cursive;
+  font-size: 30px;
+  margin-bottom:20px;
+  animation: bounce 1s infinite alternate;
 }
 
-/* Button wrapper */
+/* Buttons */
 .buttons {
+  display:flex;
+  justify-content:center;
+  gap:20px;
   position: relative;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  height: 80px;
-  align-items: center;
+  margin-top: 20px;
 }
 
 button {
-  padding: 12px 28px;
-  font-size: 18px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: 0.25s ease;
+  padding:12px 28px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:0.3s;
+  font-weight:600;
 }
 
 #yes {
-  background: #ff2e63;
-  color: white;
-  z-index: 1; /* Ensure Yes is always on top */
+  background:#ff2e63;
+  color:white;
+  box-shadow: 0 0 15px rgba(255,46,99,0.6);
 }
 
 #yes:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
+  box-shadow: 0 0 25px rgba(255,46,99,0.8);
 }
 
 #no {
-  background: #444;
-  color: white;
-  position: relative;
+  background:#444;
+  color:white;
+  position:relative;
+  z-index:1;
 }
 
-/* Surprise section */
+/* Surprise message */
 #surprise {
-  display: none;
-  margin-top: 25px;
+  display:none;
+  margin-top:25px;
   animation: popUp 0.8s ease forwards;
+  font-size:20px;
+  font-weight:600;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+/* Animations */
 @keyframes popUp {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from { transform: scale(0); opacity:0;}
+  to { transform: scale(1); opacity:1;}
 }
 
-/* Floating hearts */
-.heart {
+@keyframes bounce {
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-10px);}
+}
+
+/* Floating hearts / confetti */
+.confetti, .heart {
   position: fixed;
-  bottom: -20px;
   font-size: 20px;
   animation: floatUp 6s linear infinite;
+  pointer-events:none;
+  user-select:none;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-100vh); opacity: 0; }
+  0% { transform: translateY(0) rotate(0deg); opacity:1; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity:0; }
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
@@ -120,34 +122,32 @@ button {
   </div>
 
   <div id="surprise">
-    <h2>Yayyyy!! ❤️🥰</h2>
+    <h2>Yayyyy!! ❤️🥰 Happy Valentine’s Day ❤️</h2>
     <p>You are stuck with me forever 😌</p>
   </div>
 </div>
 
 <script>
+// Elements
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const container = document.querySelector(".container");
 
+// Move No button randomly inside the container but never overlap Yes
 function moveNo() {
   noBtn.style.position = "absolute";
 
-  const containerWidth = container.clientWidth;
-  const containerHeight = container.clientHeight;
-
+  const containerWidth = container.clientWidth - noBtn.offsetWidth;
+  const containerHeight = container.clientHeight - noBtn.offsetHeight - 20;
   const yesRect = yesBtn.getBoundingClientRect();
-  const containerRect = container.getBoundingClientRect();
 
-  let x, y;
-  let tries = 0;
-
+  let x, y, tries=0;
   do {
-    x = Math.random() * (containerWidth - noBtn.offsetWidth);
-    y = Math.random() * (containerHeight - noBtn.offsetHeight - 50) + 20; // leave top padding
+    x = Math.random() * containerWidth;
+    y = Math.random() * containerHeight;
     tries++;
-    if (tries > 100) break; // fail-safe
-  } while (
+    if(tries>100) break;
+  } while(
     x + noBtn.offsetWidth > yesBtn.offsetLeft &&
     x < yesBtn.offsetLeft + yesBtn.offsetWidth &&
     y + noBtn.offsetHeight > yesBtn.offsetTop &&
@@ -158,27 +158,46 @@ function moveNo() {
   noBtn.style.top = y + "px";
 }
 
+// Reset No button on reload
 window.onload = function() {
-  noBtn.style.position = "relative";
-  noBtn.style.left = "0px";
-  noBtn.style.top = "0px";
+  noBtn.style.position="relative";
+  noBtn.style.left="0px";
+  noBtn.style.top="0px";
 };
 
-function showSurprise() {
-  document.getElementById("surprise").style.display = "block";
+// Surprise effect
+function showSurprise(){
+  document.getElementById("surprise").style.display="block";
+  startConfetti();
   createHearts();
 }
 
-function createHearts() {
-  setInterval(() => {
+// Create floating hearts
+function createHearts(){
+  const interval = setInterval(()=>{
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (Math.random()*20+20)+"px";
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-  }, 300);
+    setTimeout(()=>heart.remove(),6000);
+  }, 200);
+}
+
+// Create confetti explosion
+function startConfetti(){
+  const colors = ["#ff2e63","#ff758c","#ff7eb3","#fff"];
+  const interval = setInterval(()=>{
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    confetti.innerHTML = "🎉";
+    confetti.style.left = Math.random()*100 + "vw";
+    confetti.style.fontSize = (Math.random()*25+15)+"px";
+    confetti.style.color = colors[Math.floor(Math.random()*colors.length)];
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),6000);
+  },150);
 }
 </script>
 
