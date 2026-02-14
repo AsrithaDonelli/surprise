@@ -193,8 +193,17 @@ function typeMessage(message, elementId) {
     el.textContent += message[i];
     i++;
     if (i >= message.length) clearInterval(interval);
-  }, 50);
+  }, 120); // slower speed for suspense
 }
+
+const delay = (char) => (char === '.' || char === '!' || char === ',') ? 300 : 120;
+const interval = setInterval(() => {
+  el.textContent += message[i];
+  let nextDelay = delay(message[i]);
+  i++;
+  clearInterval(interval);
+  if (i < message.length) setTimeout(() => typeMessage(message.slice(i), elementId), nextDelay);
+}, 120);
 
 // Show surprise
 function showSurprise(){
