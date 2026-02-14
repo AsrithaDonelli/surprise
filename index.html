@@ -166,11 +166,26 @@ window.onload = function() {
 };
 
 // Surprise effect
+function typeMessage(message, elementId) {
+  const el = document.getElementById(elementId);
+  el.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    el.textContent += message[i];
+    i++;
+    if (i >= message.length) clearInterval(interval);
+  }, 50); // Adjust speed here
+}
+
+// Call it when Yes is clicked
 function showSurprise(){
-  document.getElementById("surprise").style.display="block";
+  document.getElementById("surprise").style.display = "block";
   noBtn.style.display = "none";
   startConfetti();
   createHearts();
+
+  const message = "Sharat, every moment with you is a mix of laughter, love, and little adventures. You make life brighter, funnier, and more magical. Today, I just want to remind you that my heart is yours forever ❤️ Happy Valentine’s Day!";
+  typeMessage(message, "customMessage");
 }
 
 // Create floating hearts
